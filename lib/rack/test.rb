@@ -196,7 +196,6 @@ module Rack
 
         env = default_env.merge(env)
 
-        env["REQUEST_URI"] = path
         env["HTTP_HOST"] ||= [uri.host, (uri.port if uri.port != uri.default_port)].compact.join(":")
 
         env.update("HTTPS" => "on") if URI::HTTPS === uri
@@ -234,6 +233,8 @@ module Rack
         if env.has_key?(:cookie)
           set_cookie(env.delete(:cookie), uri)
         end
+
+        env["REQUEST_URI"] = [uri.path, uri.query].compact.join('?')
 
         Rack::MockRequest.env_for(uri.to_s, env)
       end
