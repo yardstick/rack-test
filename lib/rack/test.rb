@@ -196,6 +196,7 @@ module Rack
 
         env = default_env.merge(env)
 
+        env["REQUEST_URI"] = path
         env["HTTP_HOST"] ||= [uri.host, (uri.port if uri.port != uri.default_port)].compact.join(":")
 
         env.update("HTTPS" => "on") if URI::HTTPS === uri
